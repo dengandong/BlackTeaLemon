@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -770,6 +770,241 @@
   .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 3px 0 #8d6c1f; }
   .btn-primary:active { transform: translateY(1px); box-shadow: 0 1px 0 #8d6c1f; }
 
+  /* ==== Profile / Bio ==== */
+  .profile-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: var(--shadow-elevated), var(--shadow-inset);
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 320px;
+  }
+
+  .profile-photo {
+    position: relative;
+    background: var(--bg-deep);
+    border-right: 1px solid var(--border-subtle);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .profile-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text-muted);
+    background:
+      repeating-linear-gradient(45deg, transparent 0, transparent 12px, rgba(212, 168, 87, 0.04) 12px, rgba(212, 168, 87, 0.04) 24px),
+      var(--bg-deep);
+  }
+
+  .profile-photo-placeholder-icon {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 64px;
+    color: var(--border-strong);
+    line-height: 1;
+  }
+
+  .profile-photo-placeholder-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .profile-photo-edit {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(10, 13, 18, 0.85);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .profile-photo-edit:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+  }
+
+  .profile-bio {
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .profile-bio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .profile-handle-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 6px;
+  }
+
+  .profile-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: 0.005em;
+  }
+
+  .profile-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+  }
+
+  .profile-bio-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .profile-bio-body p { margin-bottom: 10px; }
+  .profile-bio-body p:last-child { margin-bottom: 0; }
+  .profile-bio-body strong { color: var(--accent-gold); font-weight: 600; }
+  .profile-bio-body em { color: var(--accent-cyan); font-style: italic; }
+
+  .profile-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+  }
+
+  .profile-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .profile-meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .profile-meta-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+
+  /* Bio modal */
+  .modal.bio-modal { max-width: 640px; }
+
+  .photo-upload-zone {
+    border: 1px dashed var(--border-strong);
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--bg-input);
+  }
+
+  .photo-upload-zone:hover {
+    border-color: var(--accent-gold);
+    background: var(--bg-elevated);
+  }
+
+  .photo-upload-zone.has-image {
+    padding: 0;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    max-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-upload-zone.has-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-upload-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .photo-upload-clear {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(10, 13, 18, 0.85);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+
+  .photo-upload-clear:hover {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+  }
+
   /* ==== Blog ==== */
   .blog-panel {
     background: var(--bg-panel);
@@ -993,6 +1228,53 @@
     text-underline-offset: 2px;
   }
 
+  .blog-detail-body img,
+  .editor-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 14px 0;
+    border: 1px solid var(--border-subtle);
+    display: block;
+  }
+
+  .blog-detail-body video,
+  .editor-content video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 14px 0;
+    border: 1px solid var(--border-subtle);
+    display: block;
+    background: #000;
+  }
+
+  .blog-detail-body iframe,
+  .editor-content iframe {
+    max-width: 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 4px;
+    margin: 14px 0;
+    border: 1px solid var(--border-subtle);
+    display: block;
+  }
+
+  .blog-detail-body figure,
+  .editor-content figure {
+    margin: 14px 0;
+  }
+
+  .blog-detail-body figure figcaption,
+  .editor-content figure figcaption {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
   /* ==== Blog editor toolbar ==== */
   .editor-toolbar {
     display: flex;
@@ -1131,6 +1413,11 @@
     .blog-detail-header { padding: 18px 20px 14px; flex-direction: column; }
     .blog-detail-body { padding: 18px 20px 24px; }
     .blog-detail-title { font-size: 24px; }
+    .profile-panel { grid-template-columns: 1fr; }
+    .profile-photo { border-right: none; border-bottom: 1px solid var(--border-subtle); aspect-ratio: 16 / 9; }
+    .profile-photo-placeholder { min-height: 220px; }
+    .profile-bio { padding: 22px 20px; }
+    .profile-name { font-size: 28px; }
   }
 
   /* ==== Scrollbar ==== */
@@ -1152,11 +1439,22 @@ const {
 
 const STORAGE_KEY = 'poker_ledger_sessions_v1';
 const POSTS_KEY = 'poker_ledger_posts_v1';
+const PROFILE_KEY = 'poker_ledger_profile_v1';
+
+const DEFAULT_PROFILE = {
+  name: 'BlackTeaLemon',
+  tagline: 'Live cash player · Student of the game',
+  bio: '<p>Welcome to my poker journal. I\'ve been grinding live <strong>$2/$5</strong> and <strong>$5/$10</strong> NLHE since 2024, slowly working my way up.</p><p>This site tracks every session — wins, losses, and the lessons in between. The blog is where I think out loud about hands, strategy, and the mental side of the game.</p>',
+  photo: null, // base64 data URL
+  homeBase: 'Las Vegas, NV',
+  mainGame: 'NL Hold\'em',
+  since: '2024',
+};
 
 // ===== Auth =====
-// 密码哈希值 (SHA-256). 默认密码: dengandongGT1227!
-// 想改密码? 在浏览器 Console 运行下面这行，把输出替换到这里:
-//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('你的新密码')).then(b=>console.log(Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')))
+// Password hash (SHA-256). Default password: dengandongGT1227!
+// To change password? Run this in browser Console and replace the hash below:
+//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-new-password')).then(b=>console.log(Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')))
 const AUTHOR_HASH = '1d70cd1a3ff495a1a09a2878b6b4662a48ea9d7a6a1226a23ece8b85ce1e9a90';
 const AUTH_SESSION_KEY = 'poker_ledger_author_unlocked';
 
@@ -1230,9 +1528,42 @@ async function loadPosts() {
 async function savePosts(posts) {
   try {
     await window.storage.set(POSTS_KEY, JSON.stringify(posts));
+    return true;
   } catch (e) {
     console.error('Failed to save posts:', e);
+    alert('Could not save your post. The total size of all posts may have exceeded the 5MB storage limit. Try removing large images/videos or splitting content into multiple posts.');
+    return false;
   }
+}
+
+async function loadProfile() {
+  try {
+    const result = await window.storage.get(PROFILE_KEY);
+    if (result && result.value) {
+      return JSON.parse(result.value);
+    }
+  } catch (e) {
+    // doesn't exist yet
+  }
+  return null;
+}
+
+async function saveProfile(profile) {
+  try {
+    await window.storage.set(PROFILE_KEY, JSON.stringify(profile));
+  } catch (e) {
+    console.error('Failed to save profile:', e);
+  }
+}
+
+// File -> base64 data URL
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 }
 
 // Strip HTML tags for excerpt preview
@@ -1244,30 +1575,30 @@ function htmlToText(html) {
 
 // ===== Demo seed (only first run) =====
 const DEMO = [
-  { id: '1', date: '2024-08-12', venue: 'Bellagio', stakes: '$2/$5 NL', duration: 6.5, buyIn: 500, cashOut: 1350, pnl: 850, note: '后期碰到一桌好桌，翻牌前控制紧凑' },
-  { id: '2', date: '2024-09-03', venue: 'Wynn', stakes: '$5/$10 NL', duration: 8, buyIn: 2000, cashOut: 800, pnl: -1200, note: '坐位不好，放走了一手大牌' },
+  { id: '1', date: '2024-08-12', venue: 'Bellagio', stakes: '$2/$5 NL', duration: 6.5, buyIn: 500, cashOut: 1350, pnl: 850, note: 'Found a soft table late, played tight pre-flop' },
+  { id: '2', date: '2024-09-03', venue: 'Wynn', stakes: '$5/$10 NL', duration: 8, buyIn: 2000, cashOut: 800, pnl: -1200, note: 'Bad seat, let a big hand slip' },
   { id: '3', date: '2024-09-21', venue: 'Aria', stakes: '$2/$5 NL', duration: 5, buyIn: 500, cashOut: 1120, pnl: 620, note: '' },
-  { id: '4', date: '2024-10-08', venue: 'Bellagio', stakes: '$5/$10 NL', duration: 7.5, buyIn: 1500, cashOut: 3600, pnl: 2100, note: '冷静抓住一个明显在打闷的鱼' },
-  { id: '5', date: '2024-11-02', venue: 'Resorts World', stakes: '$2/$5 NL', duration: 4, buyIn: 500, cashOut: 120, pnl: -380, note: '状态不好，及早离桌' },
+  { id: '4', date: '2024-10-08', venue: 'Bellagio', stakes: '$5/$10 NL', duration: 7.5, buyIn: 1500, cashOut: 3600, pnl: 2100, note: 'Caught a fish who was clearly bluff-heavy' },
+  { id: '5', date: '2024-11-02', venue: 'Resorts World', stakes: '$2/$5 NL', duration: 4, buyIn: 500, cashOut: 120, pnl: -380, note: 'Off my game, left early' },
   { id: '6', date: '2024-11-19', venue: 'Aria', stakes: '$5/$10 NL', duration: 9, buyIn: 1500, cashOut: 2950, pnl: 1450, note: '' },
-  { id: '7', date: '2024-12-14', venue: 'Wynn', stakes: '$10/$25 NL', duration: 6, buyIn: 3000, cashOut: 6200, pnl: 3200, note: '尝试更高级别，对手偏松' },
-  { id: '8', date: '2025-01-05', venue: 'Bellagio', stakes: '$5/$10 NL', duration: 8, buyIn: 2000, cashOut: 1150, pnl: -850, note: '河牌追了不该追的边' },
+  { id: '7', date: '2024-12-14', venue: 'Wynn', stakes: '$10/$25 NL', duration: 6, buyIn: 3000, cashOut: 6200, pnl: 3200, note: 'Tried higher stakes, lineup was loose' },
+  { id: '8', date: '2025-01-05', venue: 'Bellagio', stakes: '$5/$10 NL', duration: 8, buyIn: 2000, cashOut: 1150, pnl: -850, note: 'Chased a bad river, should have folded' },
   { id: '9', date: '2025-02-20', venue: 'Aria', stakes: '$5/$10 NL', duration: 7, buyIn: 1500, cashOut: 3280, pnl: 1780, note: '' },
-  { id: '10', date: '2025-03-15', venue: 'Bellagio', stakes: '$10/$25 NL', duration: 10, buyIn: 3000, cashOut: 7500, pnl: 4500, note: '生涯最佳一夜，捕捉到两个粘住AA的对手' },
+  { id: '10', date: '2025-03-15', venue: 'Bellagio', stakes: '$10/$25 NL', duration: 10, buyIn: 3000, cashOut: 7500, pnl: 4500, note: 'Career night - stacked two players who couldn\'t fold AA' },
 ];
 
 const DEMO_POSTS = [
   {
     id: 'p1',
     date: '2025-03-16',
-    title: '$10/$25 一手 AK vs 鱼的 4-bet 思考',
-    body: '<p>昨晚 Bellagio 的牌桌，UTG 一个明显偏松的中年大叔开 $75，HJ 加到 $250，我在 BTN 拿 <strong>AKo</strong>。</p><p>这是经典的"4-bet or call"决策点。考虑到：</p><ul><li>UTG 是 fish，3-bet 范围会很重</li><li>HJ 是个 reg，但今天开局连续被打 down，状态可疑</li><li>我位置好，4-bet to $850 既能 fold equity，又能 isolate 鱼</li></ul><p>最终我 4-bet 了，HJ fold，UTG 跟。Flop K72 rainbow，我 c-bet $700 进 $2100 池，他直接 jam，我跟，他 KQ。</p><blockquote>反思：在 fish 跟注后，K-high flop 上对方 jam 的范围很窄，几乎都是 KQ/KJ/72/22/77，我跟得没问题。下次注意位置 + 对手类型的组合，能让 4-bet 更有理由。</blockquote>'
+    title: '$10/$25 — A 4-bet Spot with AKo vs a Fish',
+    body: '<p>Last night at Bellagio. UTG (clearly loose, middle-aged casual) opens to $75, HJ 3-bets to $250. I\'m in BTN with <strong>AKo</strong>.</p><p>Classic "4-bet or call" decision. Considering:</p><ul><li>UTG is a fish whose 3-bet range will be heavy</li><li>HJ is a reg, but he\'d been getting run over and looked frustrated</li><li>I have position; 4-betting to $850 gives me fold equity AND isolates the fish</li></ul><p>I 4-bet. HJ folded, UTG called. Flop K72 rainbow. I c-bet $700 into $2,100. He jammed. I called. He had KQ.</p><blockquote>Reflection: when a fish flat-calls a 4-bet pre, his jamming range on a K-high flop is super narrow — basically KQ/KJ/72/22/77. Calling was correct. Lesson: combining position + opponent type makes the 4-bet much more justifiable.</blockquote>'
   },
   {
     id: 'p2',
     date: '2025-02-22',
-    title: '关于"何时该离桌"的一些感悟',
-    body: '<p>打了半年现金桌后，我越来越认同一句话：<em>选桌和离桌的能力，比技术本身更重要。</em></p><h2>什么时候该走</h2><ol><li>桌上的鱼离场了</li><li>自己开始有 tilt 的迹象（呼吸变浅、想"找回来"）</li><li>状态明显下滑，连续做出几个不该做的 call</li></ol><p>尤其是第二点，<strong>tilt 是慢慢爬上来的</strong>。等你意识到的时候，往往已经多输了几个 buy-in。</p><p>我现在的硬性规则：单局亏超过 3 个 buy-in 必须强制离桌冷静 1 小时。</p>'
+    title: 'On Knowing When to Leave the Table',
+    body: '<p>After half a year of cash games, I\'ve come to deeply agree with one idea: <em>the ability to pick your table — and to leave it — matters more than technical skill.</em></p><h2>When to walk away</h2><ol><li>The fish has left the table</li><li>You start showing tilt symptoms (shallow breathing, the urge to "win it back")</li><li>Your state is clearly off — multiple bad calls in a row</li></ol><p>Especially #2: <strong>tilt creeps up on you slowly</strong>. By the time you notice, you\'ve usually already donated a few buy-ins.</p><p>My current hard rule: down 3 buy-ins in a session = mandatory 1-hour break, no exceptions.</p>'
   },
 ];
 
@@ -1289,6 +1620,34 @@ function App() {
   // Auth state - default to viewer mode
   const [isAuthor, setIsAuthor] = useState(false);
   const [unlockModalOpen, setUnlockModalOpen] = useState(false);
+
+  // Profile state
+  const [profile, setProfile] = useState(DEFAULT_PROFILE);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+
+  // Load profile on mount
+  useEffect(() => {
+    (async () => {
+      const stored = await loadProfile();
+      if (stored) {
+        setProfile({ ...DEFAULT_PROFILE, ...stored });
+      } else {
+        await saveProfile(DEFAULT_PROFILE);
+      }
+      setProfileLoaded(true);
+    })();
+  }, []);
+
+  // Persist profile
+  useEffect(() => {
+    if (profileLoaded) saveProfile(profile);
+  }, [profile, profileLoaded]);
+
+  const handleProfileSubmit = useCallback((data) => {
+    setProfile(data);
+    setProfileModalOpen(false);
+  }, []);
 
   // Restore unlock from sessionStorage on mount (per-tab session)
   useEffect(() => {
@@ -1411,7 +1770,7 @@ function App() {
   }, [sessions]);
 
   const handleDelete = useCallback((id) => {
-    if (confirm('Are you sure you want to delete this session?')) {
+    if (confirm('Delete this session record?')) {
       setSessions(prev => prev.filter(s => s.id !== id));
     }
   }, []);
@@ -1450,7 +1809,7 @@ function App() {
   }, [posts]);
 
   const handlePostDelete = useCallback((id) => {
-    if (confirm('确定要删除这篇文章吗？')) {
+    if (confirm('Delete this post?')) {
       setPosts(prev => prev.filter(p => p.id !== id));
       setActivePostId(null);
     }
@@ -1475,6 +1834,11 @@ function App() {
         onLockClick={handleLock}
       />
       <main className="main">
+        <ProfilePanel
+          profile={profile}
+          isAuthor={isAuthor}
+          onEdit={() => setProfileModalOpen(true)}
+        />
         <StatsStrip stats={stats} />
         <ChartPanel
           data={filteredChartData}
@@ -1520,6 +1884,13 @@ function App() {
         <UnlockModal
           onUnlock={handleUnlock}
           onClose={() => setUnlockModalOpen(false)}
+        />
+      )}
+      {profileModalOpen && isAuthor && (
+        <ProfileModal
+          initial={profile}
+          onSubmit={handleProfileSubmit}
+          onClose={() => setProfileModalOpen(false)}
         />
       )}
     </>
@@ -1653,7 +2024,7 @@ function ChartPanel({ data, mode, setMode, totalPoints }) {
     <section className="chart-panel">
       <div className="panel-header">
         <h2 className="panel-title">
-          <span className="panel-title-prefix">[01]</span>
+          <span className="panel-title-prefix">[02]</span>
           Cumulative P/L Curve
         </h2>
         <div className="chart-controls">
@@ -1772,7 +2143,7 @@ function TablePanel({ sessions, isAuthor, onAdd, onEdit, onDelete }) {
     <section className="table-panel">
       <div className="table-header">
         <h2 className="panel-title">
-          <span className="panel-title-prefix">[02]</span>
+          <span className="panel-title-prefix">[03]</span>
           Session Log
         </h2>
         {isAuthor && <button className="add-btn" onClick={onAdd}>+ New Session</button>}
@@ -1831,13 +2202,222 @@ function TablePanel({ sessions, isAuthor, onAdd, onEdit, onDelete }) {
   );
 }
 
+// ===== Profile Panel =====
+function ProfilePanel({ profile, isAuthor, onEdit }) {
+  return (
+    <section className="profile-panel">
+      <div className="profile-photo">
+        {profile.photo ? (
+          <img src={profile.photo} alt={profile.name || 'Profile'} />
+        ) : (
+          <div className="profile-photo-placeholder">
+            <div className="profile-photo-placeholder-icon">◇</div>
+            <div className="profile-photo-placeholder-text">Photo</div>
+          </div>
+        )}
+        {isAuthor && (
+          <button className="profile-photo-edit" onClick={onEdit} title="Edit profile">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Edit</span>
+          </button>
+        )}
+      </div>
+      <div className="profile-bio">
+        <div className="profile-handle-line">[01] · Profile</div>
+        <div className="profile-name">{profile.name || 'Your Name'}</div>
+        {profile.tagline && <div className="profile-tagline">{profile.tagline}</div>}
+        <div
+          className="profile-bio-body"
+          dangerouslySetInnerHTML={{ __html: profile.bio || '<p style="color:var(--text-muted);font-style:italic;">Your bio goes here. Click Edit to write something about yourself.</p>' }}
+        />
+        {(profile.homeBase || profile.mainGame || profile.since) && (
+          <div className="profile-meta">
+            {profile.homeBase && (
+              <div className="profile-meta-item">
+                <span className="profile-meta-label">Home Base</span>
+                <span className="profile-meta-value">{profile.homeBase}</span>
+              </div>
+            )}
+            {profile.mainGame && (
+              <div className="profile-meta-item">
+                <span className="profile-meta-label">Main Game</span>
+                <span className="profile-meta-value">{profile.mainGame}</span>
+              </div>
+            )}
+            {profile.since && (
+              <div className="profile-meta-item">
+                <span className="profile-meta-label">Playing Since</span>
+                <span className="profile-meta-value">{profile.since}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ===== Profile Modal =====
+function ProfileModal({ initial, onSubmit, onClose }) {
+  const [form, setForm] = useState(initial || DEFAULT_PROFILE);
+  const fileInputRef = React.useRef(null);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image too large (max 5MB). Please pick a smaller one.');
+      return;
+    }
+    try {
+      const dataUrl = await fileToDataURL(file);
+      update('photo', dataUrl);
+    } catch (err) {
+      alert('Failed to load image.');
+    }
+  };
+
+  const submit = () => {
+    onSubmit({
+      ...form,
+      name: (form.name || '').trim(),
+      tagline: (form.tagline || '').trim(),
+      bio: form.bio || '',
+      homeBase: (form.homeBase || '').trim(),
+      mainGame: (form.mainGame || '').trim(),
+      since: (form.since || '').trim(),
+    });
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal bio-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <span className="modal-title">Edit Profile</span>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <div className="form-grid">
+            <div className="form-field">
+              <label>Photo</label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handlePhotoChange}
+              />
+              <div
+                className={`photo-upload-zone ${form.photo ? 'has-image' : ''}`}
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              >
+                {form.photo ? (
+                  <>
+                    <img src={form.photo} alt="Preview" />
+                    <button
+                      className="photo-upload-clear"
+                      onClick={(e) => { e.stopPropagation(); update('photo', null); }}
+                      title="Remove photo"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </>
+                ) : (
+                  <div className="photo-upload-text">Click to upload photo (JPG/PNG, max 5MB)</div>
+                )}
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-field">
+                <label>Display Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. BlackTeaLemon"
+                  value={form.name}
+                  onChange={(e) => update('name', e.target.value)}
+                />
+              </div>
+              <div className="form-field">
+                <label>Tagline</label>
+                <input
+                  type="text"
+                  placeholder="A short one-liner"
+                  value={form.tagline}
+                  onChange={(e) => update('tagline', e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="form-field">
+              <label>Bio</label>
+              <RichEditor
+                initialHtml={form.bio}
+                onChange={(html) => update('bio', html)}
+              />
+            </div>
+            <div className="form-row">
+              <div className="form-field">
+                <label>Home Base</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Las Vegas, NV"
+                  value={form.homeBase}
+                  onChange={(e) => update('homeBase', e.target.value)}
+                />
+              </div>
+              <div className="form-field">
+                <label>Main Game</label>
+                <input
+                  type="text"
+                  placeholder="e.g. NL Hold'em"
+                  value={form.mainGame}
+                  onChange={(e) => update('mainGame', e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="form-field">
+              <label>Playing Since</label>
+              <input
+                type="text"
+                placeholder="e.g. 2024"
+                value={form.since}
+                onChange={(e) => update('since', e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+          <button className="btn btn-primary" onClick={submit}>Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ===== Blog Panel =====
 function BlogPanel({ posts, activePost, isAuthor, onSelect, onAdd, onEdit, onDelete }) {
   return (
     <section className="blog-panel">
       <div className="table-header">
         <h2 className="panel-title">
-          <span className="panel-title-prefix">[03]</span>
+          <span className="panel-title-prefix">[04]</span>
           Poker Blog
         </h2>
         {isAuthor && <button className="add-btn" onClick={onAdd}>+ New Post</button>}
@@ -1903,12 +2483,41 @@ function BlogPanel({ posts, activePost, isAuthor, onSelect, onAdd, onEdit, onDel
 // ===== Rich Text Editor =====
 function RichEditor({ initialHtml, onChange }) {
   const ref = React.useRef(null);
+  const imageInputRef = React.useRef(null);
+  const videoInputRef = React.useRef(null);
+  const savedSelection = React.useRef(null);
 
   useEffect(() => {
     if (ref.current && ref.current.innerHTML !== (initialHtml || '')) {
       ref.current.innerHTML = initialHtml || '';
     }
   }, []);
+
+  // Save current selection so we can restore it after file dialog closes
+  const saveSelection = () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && ref.current && ref.current.contains(sel.anchorNode)) {
+      savedSelection.current = sel.getRangeAt(0).cloneRange();
+    }
+  };
+
+  const restoreSelection = () => {
+    if (savedSelection.current && ref.current) {
+      ref.current.focus();
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(savedSelection.current);
+    } else if (ref.current) {
+      ref.current.focus();
+      // Place caret at end if no saved selection
+      const range = document.createRange();
+      range.selectNodeContents(ref.current);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  };
 
   const exec = (cmd, value = null) => {
     document.execCommand(cmd, false, value);
@@ -1922,12 +2531,94 @@ function RichEditor({ initialHtml, onChange }) {
     if (ref.current) onChange(ref.current.innerHTML);
   };
 
-  const Btn = ({ cmd, value, children, title, className = '' }) => (
+  // Insert HTML at the current cursor position
+  const insertHtml = (html) => {
+    restoreSelection();
+    document.execCommand('insertHTML', false, html);
+    if (ref.current) onChange(ref.current.innerHTML);
+  };
+
+  const handleImageSelect = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = ''; // reset so same file can be picked twice
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image too large (max 5MB).');
+      return;
+    }
+    try {
+      const dataUrl = await fileToDataURL(file);
+      insertHtml(`<img src="${dataUrl}" alt="" />`);
+    } catch (err) {
+      alert('Failed to load image.');
+    }
+  };
+
+  const handleVideoSelect = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      alert('Please select a video file.');
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      alert('Video too large (max 50MB). For larger videos, paste a YouTube link instead.');
+      return;
+    }
+    try {
+      const dataUrl = await fileToDataURL(file);
+      insertHtml(`<video src="${dataUrl}" controls preload="metadata"></video>`);
+    } catch (err) {
+      alert('Failed to load video.');
+    }
+  };
+
+  const handleImageUrl = () => {
+    saveSelection();
+    const url = prompt('Enter image URL:');
+    if (!url) return;
+    insertHtml(`<img src="${url}" alt="" />`);
+  };
+
+  const handleVideoUrl = () => {
+    saveSelection();
+    const url = prompt('Enter video URL (YouTube, Vimeo, or direct .mp4 link):');
+    if (!url) return;
+    // Detect YouTube
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+    if (ytMatch) {
+      insertHtml(`<iframe width="100%" style="aspect-ratio:16/9;border:1px solid var(--border-subtle);border-radius:4px;margin:14px 0;" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+      return;
+    }
+    // Detect Vimeo
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+      insertHtml(`<iframe width="100%" style="aspect-ratio:16/9;border:1px solid var(--border-subtle);border-radius:4px;margin:14px 0;" src="https://player.vimeo.com/video/${vimeoMatch[1]}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`);
+      return;
+    }
+    // Otherwise treat as direct video link
+    insertHtml(`<video src="${url}" controls preload="metadata"></video>`);
+  };
+
+  const Btn = ({ cmd, value, onClick, children, title, className = '' }) => (
     <button
       type="button"
       className={`editor-tool-btn ${className}`}
       title={title}
-      onMouseDown={(e) => { e.preventDefault(); exec(cmd, value); }}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        if (onClick) {
+          saveSelection();
+          onClick();
+        } else {
+          exec(cmd, value);
+        }
+      }}
     >
       {children}
     </button>
@@ -1935,6 +2626,8 @@ function RichEditor({ initialHtml, onChange }) {
 
   return (
     <>
+      <input ref={imageInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageSelect} />
+      <input ref={videoInputRef} type="file" accept="video/*" style={{ display: 'none' }} onChange={handleVideoSelect} />
       <div className="editor-toolbar">
         <Btn cmd="formatBlock" value="h1" title="Heading 1">H1</Btn>
         <Btn cmd="formatBlock" value="h2" title="Heading 2">H2</Btn>
@@ -1949,6 +2642,16 @@ function RichEditor({ initialHtml, onChange }) {
         <Btn cmd="insertOrderedList"   title="Numbered list">1.</Btn>
         <Btn cmd="formatBlock" value="blockquote" title="Quote">&ldquo;</Btn>
         <span className="editor-divider"></span>
+        <Btn onClick={() => { imageInputRef.current && imageInputRef.current.click(); }} title="Upload image (max 5MB)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </Btn>
+        <Btn onClick={handleImageUrl} title="Insert image by URL">URL</Btn>
+        <span className="editor-divider"></span>
+        <Btn onClick={() => { videoInputRef.current && videoInputRef.current.click(); }} title="Upload video (max 50MB)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </Btn>
+        <Btn onClick={handleVideoUrl} title="Embed video (YouTube / Vimeo / direct link)">▶</Btn>
+        <span className="editor-divider"></span>
         <Btn cmd="removeFormat" title="Clear formatting">⌫</Btn>
       </div>
       <div
@@ -1957,7 +2660,9 @@ function RichEditor({ initialHtml, onChange }) {
         contentEditable
         suppressContentEditableWarning
         onInput={handleInput}
-        data-placeholder="Start writing your hand analysis or thoughts…"
+        onKeyUp={saveSelection}
+        onMouseUp={saveSelection}
+        data-placeholder="Start writing your hand analysis or thoughts..."
       />
     </>
   );
@@ -1990,7 +2695,7 @@ function UnlockModal({ onUnlock, onClose }) {
 
   const submit = async () => {
     if (!password) {
-      setError('Please enter the password');
+      setError('Please enter password');
       return;
     }
     setChecking(true);
@@ -2085,7 +2790,7 @@ function PostModal({ initial, onSubmit, onClose }) {
 
   const submit = () => {
     if (!form.title.trim()) {
-      alert('Please fill in the title.');
+      alert('Please enter a title.');
       return;
     }
     onSubmit({
@@ -2166,7 +2871,7 @@ function SessionModal({ initial, onSubmit, onClose }) {
 
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  // 实时计算 P/L 预览
+  // Live P/L preview
   const pnlPreview = useMemo(() => {
     const bi = Number(form.buyIn);
     const co = Number(form.cashOut);
@@ -2176,13 +2881,13 @@ function SessionModal({ initial, onSubmit, onClose }) {
 
   const submit = () => {
     if (!form.date || !form.venue.trim() || !form.stakes.trim() || form.buyIn === '' || form.cashOut === '') {
-      alert('Please fill in all required fields: Date, Venue, Stakes, Buy-in, and Cash-out.');
+      alert('Please fill in date, venue, stakes, buy-in and cash-out.');
       return;
     }
     const buyIn = Number(form.buyIn);
     const cashOut = Number(form.cashOut);
     if (isNaN(buyIn) || isNaN(cashOut) || buyIn < 0 || cashOut < 0) {
-      alert('Buy-in and Cash-out must be valid non-negative numbers.');
+      alert('Buy-in and Cash-out must be non-negative numbers.');
       return;
     }
     onSubmit({
@@ -2275,7 +2980,7 @@ function SessionModal({ initial, onSubmit, onClose }) {
             <div className="form-field">
               <label>Notes</label>
               <textarea
-                placeholder="Thoughts, memorable hands, bad beats, coolers, or anything you want to remember about this session..."
+                placeholder="Thoughts, table conditions, key hands..."
                 value={form.note}
                 onChange={(e) => update('note', e.target.value)}
               ></textarea>
