@@ -703,6 +703,87 @@
     margin-top: 5px;
   }
 
+  /* ==== ComboBox (input + dropdown suggestions) ==== */
+  .combobox {
+    position: relative;
+  }
+
+  .combobox-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color 0.15s;
+  }
+
+  .combobox-toggle:hover { color: var(--accent-gold); }
+
+  .combobox input {
+    padding-right: 32px;
+  }
+
+  .combobox-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .combobox-option {
+    padding: 9px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.1s;
+  }
+
+  .combobox-option:last-child { border-bottom: none; }
+
+  .combobox-option:hover,
+  .combobox-option.highlighted {
+    background: var(--bg-input);
+    color: var(--accent-gold);
+  }
+
+  .combobox-option-empty {
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .combobox-section-label {
+    padding: 6px 12px 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-deep);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
   .pnl-preview {
     display: flex;
     justify-content: space-between;
@@ -1441,6 +1522,39 @@ const STORAGE_KEY = 'poker_ledger_sessions_v2';
 const POSTS_KEY = 'poker_ledger_posts_v1';
 const PROFILE_KEY = 'poker_ledger_profile_v1';
 
+// Suggestion presets - shown as autocomplete options.
+// Users can still freely type their own values.
+const VENUE_PRESETS = [
+  'Orange City Racing and Card Club',
+  'Encore',
+  'Encore Harbor',
+  'Bay101',
+  'M8trix',
+  'Parx',
+  'Wynn',
+  'Hustler',
+  'Bellagio',
+  'Aria',
+  'Commerce',
+  'Hollywood Park',
+  'Gate City',
+  'ClubWPT Gold',
+  'Home Game',
+];
+
+const STAKES_PRESETS = [
+  '$1/$2 NL',
+  '$1/$3 NL',
+  '$2/$3 NL',
+  '$2/$5 NL',
+  '$2/$3/$5 NL',
+  '$2/$3/$5/$10 NL',
+  '$5/$10 NL',
+  '$10/$10 NL',
+  '$10/$25 NL',
+  '$25/$50 NL',
+];
+
 const DEFAULT_PROFILE = {
   name: 'BlackTeaLemon',
   tagline: 'Live cash player · Student of the game',
@@ -1970,6 +2084,7 @@ function App() {
       {modalOpen && isAuthor && (
         <SessionModal
           initial={editing}
+          sessions={sessions}
           onSubmit={handleSubmit}
           onClose={() => { setModalOpen(false); setEditing(null); }}
         />
@@ -2944,8 +3059,131 @@ function PostModal({ initial, onSubmit, onClose }) {
   );
 }
 
+// ===== ComboBox (text input with dropdown suggestions) =====
+function ComboBox({ value, onChange, placeholder, presets, history }) {
+  const [open, setOpen] = useState(false);
+  const [highlight, setHighlight] = useState(-1);
+  const wrapperRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+
+  // Build deduplicated, sorted options. History items first (more relevant), then presets.
+  const allOptions = useMemo(() => {
+    const seen = new Set();
+    const result = [];
+    // History values first
+    (history || []).forEach(v => {
+      const trimmed = (v || '').trim();
+      if (trimmed && !seen.has(trimmed.toLowerCase())) {
+        seen.add(trimmed.toLowerCase());
+        result.push({ label: trimmed, source: 'history' });
+      }
+    });
+    // Then presets that aren't already in history
+    (presets || []).forEach(v => {
+      if (!seen.has(v.toLowerCase())) {
+        seen.add(v.toLowerCase());
+        result.push({ label: v, source: 'preset' });
+      }
+    });
+    return result;
+  }, [presets, history]);
+
+  // Filter by current input
+  const filtered = useMemo(() => {
+    const q = (value || '').trim().toLowerCase();
+    if (!q) return allOptions;
+    return allOptions.filter(o => o.label.toLowerCase().includes(q));
+  }, [allOptions, value]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setOpen(false);
+        setHighlight(-1);
+      }
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, []);
+
+  const selectOption = (label) => {
+    onChange(label);
+    setOpen(false);
+    setHighlight(-1);
+    if (inputRef.current) inputRef.current.focus();
+  };
+
+  const handleKeyDown = (e) => {
+    if (!open && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      setOpen(true);
+      e.preventDefault();
+      return;
+    }
+    if (!open) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlight(h => Math.min(h + 1, filtered.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlight(h => Math.max(h - 1, -1));
+    } else if (e.key === 'Enter') {
+      if (highlight >= 0 && highlight < filtered.length) {
+        e.preventDefault();
+        selectOption(filtered[highlight].label);
+      }
+    } else if (e.key === 'Escape') {
+      setOpen(false);
+      setHighlight(-1);
+    }
+  };
+
+  return (
+    <div className="combobox" ref={wrapperRef}>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => { onChange(e.target.value); setOpen(true); setHighlight(-1); }}
+        onFocus={() => setOpen(true)}
+        onKeyDown={handleKeyDown}
+        autoComplete="off"
+      />
+      <button
+        type="button"
+        className="combobox-toggle"
+        onMouseDown={(e) => { e.preventDefault(); setOpen(o => !o); if (inputRef.current) inputRef.current.focus(); }}
+        title="Show suggestions"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="combobox-dropdown">
+          {filtered.length === 0 ? (
+            <div className="combobox-option-empty">No matches · keep typing to add custom</div>
+          ) : (
+            filtered.map((opt, idx) => (
+              <div
+                key={opt.label}
+                className={`combobox-option ${idx === highlight ? 'highlighted' : ''}`}
+                onMouseEnter={() => setHighlight(idx)}
+                onMouseDown={(e) => { e.preventDefault(); selectOption(opt.label); }}
+              >
+                {opt.label}
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ===== Session Modal =====
-function SessionModal({ initial, onSubmit, onClose }) {
+function SessionModal({ initial, sessions, onSubmit, onClose }) {
   const today = new Date().toISOString().slice(0, 10);
   const [form, setForm] = useState(initial || {
     date: today,
@@ -2956,6 +3194,37 @@ function SessionModal({ initial, onSubmit, onClose }) {
     cashOut: '',
     note: '',
   });
+
+  // Extract unique venues and stakes from history (most recent first)
+  const venueHistory = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    [...(sessions || [])]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .forEach(s => {
+        const v = (s.venue || '').trim();
+        if (v && !seen.has(v.toLowerCase())) {
+          seen.add(v.toLowerCase());
+          list.push(v);
+        }
+      });
+    return list;
+  }, [sessions]);
+
+  const stakesHistory = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    [...(sessions || [])]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .forEach(s => {
+        const v = (s.stakes || '').trim();
+        if (v && !seen.has(v.toLowerCase())) {
+          seen.add(v.toLowerCase());
+          list.push(v);
+        }
+      });
+    return list;
+  }, [sessions]);
 
   // Lock body scroll
   useEffect(() => {
@@ -3032,20 +3301,22 @@ function SessionModal({ initial, onSubmit, onClose }) {
             </div>
             <div className="form-field">
               <label>Venue / Casino</label>
-              <input
-                type="text"
-                placeholder="e.g. Bellagio, Wynn, Local Cardroom"
+              <ComboBox
                 value={form.venue}
-                onChange={(e) => update('venue', e.target.value)}
+                onChange={(v) => update('venue', v)}
+                placeholder="Pick or type a venue"
+                presets={VENUE_PRESETS}
+                history={venueHistory}
               />
             </div>
             <div className="form-field">
               <label>Stakes / Blinds</label>
-              <input
-                type="text"
-                placeholder="e.g. $2/$5 NL, $5/$10 PLO"
+              <ComboBox
                 value={form.stakes}
-                onChange={(e) => update('stakes', e.target.value)}
+                onChange={(v) => update('stakes', v)}
+                placeholder="Pick or type stakes (e.g. $1/$3 NL)"
+                presets={STAKES_PRESETS}
+                history={stakesHistory}
               />
             </div>
             <div className="form-row">
