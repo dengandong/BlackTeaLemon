@@ -2182,7 +2182,7 @@ function SessionModal({ initial, onSubmit, onClose }) {
     const buyIn = Number(form.buyIn);
     const cashOut = Number(form.cashOut);
     if (isNaN(buyIn) || isNaN(cashOut) || buyIn < 0 || cashOut < 0) {
-      alert('Buy-in 和 Cash-out 必须是非负数字。');
+      alert('Buy-in and Cash-out must be valid non-negative numbers.');
       return;
     }
     onSubmit({
