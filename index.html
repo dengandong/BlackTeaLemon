@@ -1607,66 +1607,132 @@ const fmtDuration = (h) => {
 };
 
 // ===== Storage =====
+// Strategy: prefer localStorage (works everywhere, persists across sessions).
+// Fall back to window.storage if available (legacy / Claude Artifacts environment).
+// On first load, automatically migrate any data found in window.storage into localStorage.
+
+const hasLocalStorage = (() => {
+  try {
+    const k = '__poker_test__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+    return true;
+  } catch (e) {
+    return false;
+  }
+})();
+
+const hasWindowStorage = (() => {
+  try {
+    return typeof window !== 'undefined'
+      && window.storage
+      && typeof window.storage.get === 'function';
+  } catch (e) { return false; }
+})();
+
+async function storageGet(key) {
+  // 1. Try localStorage first
+  if (hasLocalStorage) {
+    try {
+      const v = localStorage.getItem(key);
+      if (v !== null) return v;
+    } catch (e) { /* ignore */ }
+  }
+  // 2. Fall back to window.storage (and migrate to localStorage if found)
+  if (hasWindowStorage) {
+    try {
+      const result = await window.storage.get(key);
+      if (result && result.value) {
+        // Migrate to localStorage so future reads are fast & reliable
+        if (hasLocalStorage) {
+          try { localStorage.setItem(key, result.value); } catch (e) { /* ignore quota */ }
+        }
+        return result.value;
+      }
+    } catch (e) { /* not found */ }
+  }
+  return null;
+}
+
+async function storageSet(key, value) {
+  // Primary: localStorage
+  if (hasLocalStorage) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (e) {
+      // Quota exceeded or other error — try window.storage as backup
+      if (!hasWindowStorage) {
+        throw e; // surface to caller
+      }
+    }
+  }
+  // Fallback: window.storage
+  if (hasWindowStorage) {
+    try {
+      await window.storage.set(key, value);
+      return true;
+    } catch (e) {
+      throw e;
+    }
+  }
+  throw new Error('No storage backend available');
+}
+
 async function loadSessions() {
   try {
-    const result = await window.storage.get(STORAGE_KEY);
-    if (result && result.value) {
-      return JSON.parse(result.value);
-    }
-  } catch (e) {
-    // Key doesn't exist yet, return empty
-  }
+    const v = await storageGet(STORAGE_KEY);
+    if (v) return JSON.parse(v);
+  } catch (e) { console.warn('loadSessions:', e); }
   return [];
 }
 
 async function saveSessions(sessions) {
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(sessions));
+    await storageSet(STORAGE_KEY, JSON.stringify(sessions));
+    return true;
   } catch (e) {
-    console.error('Failed to save:', e);
+    console.error('Failed to save sessions:', e);
+    alert('Could not save sessions. Your browser storage may be full or disabled.');
+    return false;
   }
 }
 
 async function loadPosts() {
   try {
-    const result = await window.storage.get(POSTS_KEY);
-    if (result && result.value) {
-      return JSON.parse(result.value);
-    }
-  } catch (e) {
-    // Key doesn't exist yet
-  }
+    const v = await storageGet(POSTS_KEY);
+    if (v) return JSON.parse(v);
+  } catch (e) { console.warn('loadPosts:', e); }
   return [];
 }
 
 async function savePosts(posts) {
   try {
-    await window.storage.set(POSTS_KEY, JSON.stringify(posts));
+    await storageSet(POSTS_KEY, JSON.stringify(posts));
     return true;
   } catch (e) {
     console.error('Failed to save posts:', e);
-    alert('Could not save your post. The total size of all posts may have exceeded the 5MB storage limit. Try removing large images/videos or splitting content into multiple posts.');
+    alert('Could not save your post. Browser storage limit (~5MB) may have been exceeded — try removing large images or videos.');
     return false;
   }
 }
 
 async function loadProfile() {
   try {
-    const result = await window.storage.get(PROFILE_KEY);
-    if (result && result.value) {
-      return JSON.parse(result.value);
-    }
-  } catch (e) {
-    // doesn't exist yet
-  }
+    const v = await storageGet(PROFILE_KEY);
+    if (v) return JSON.parse(v);
+  } catch (e) { console.warn('loadProfile:', e); }
   return null;
 }
 
 async function saveProfile(profile) {
   try {
-    await window.storage.set(PROFILE_KEY, JSON.stringify(profile));
+    await storageSet(PROFILE_KEY, JSON.stringify(profile));
+    return true;
   } catch (e) {
     console.error('Failed to save profile:', e);
+    alert('Could not save profile. Photo may be too large — try a smaller image.');
+    return false;
   }
 }
 
