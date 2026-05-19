@@ -1518,7 +1518,7 @@ const {
   Tooltip, ReferenceLine, Dot
 } = Recharts;
 
-const STORAGE_KEY = 'poker_ledger_sessions_v2';
+const STORAGE_KEY = 'poker_ledger_sessions_v3';
 const POSTS_KEY = 'poker_ledger_posts_v1';
 const PROFILE_KEY = 'poker_ledger_profile_v1';
 
@@ -1549,6 +1549,7 @@ const STAKES_PRESETS = [
   '$2/$5 NL',
   '$2/$3/$5 NL',
   '$2/$3/$5/$10 NL',
+  '$5/$5 NL',
   '$5/$10 NL',
   '$10/$10 NL',
   '$10/$25 NL',
@@ -1866,6 +1867,31 @@ const DEMO = [
   { id: '109', date: '2025-10-19', venue: 'Louis Home Game', stakes: '$1/$3 NL', duration: 5, buyIn: 1500, cashOut: 850, pnl: -650, note: '' },
   { id: '110', date: '2025-10-20', venue: 'Encore', stakes: '$1/$3 NL', duration: 5, buyIn: 1800, cashOut: 309, pnl: -1491, note: '' },
   { id: '111', date: '2025-10-25', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1500, cashOut: 1830, pnl: 330, note: '' },
+  { id: '112', date: '2025-10-31', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 2500, cashOut: 1950, pnl: -550, note: '' },
+  { id: '113', date: '2025-11-15', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 2035, pnl: 835, note: '' },
+  { id: '114', date: '2025-11-16', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 2075, pnl: 875, note: '' },
+  { id: '115', date: '2025-11-17', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 3000, cashOut: 900, pnl: -2100, note: '' },
+  { id: '116', date: '2025-11-22', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 3835, pnl: 2635, note: '' },
+  { id: '117', date: '2025-11-23', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 1637, pnl: 437, note: '' },
+  { id: '118', date: '2025-11-27', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 1500, pnl: 300, note: '' },
+  { id: '119', date: '2025-12-03', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 1900, pnl: 700, note: '' },
+  { id: '120', date: '2025-12-06', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 800, pnl: -400, note: '' },
+  { id: '121', date: '2025-12-10', venue: 'Parx', stakes: '$2/$5 NL', duration: 5, buyIn: 1000, cashOut: 2500, pnl: 1500, note: '' },
+  { id: '122', date: '2025-12-11', venue: 'Parx', stakes: '$10/$10 NL', duration: 5, buyIn: 3000, cashOut: 7100, pnl: 4100, note: '' },
+  { id: '123', date: '2025-12-15', venue: 'Encore', stakes: '$5/$10 NL', duration: 5, buyIn: 1000, cashOut: 1800, pnl: 800, note: '' },
+  { id: '124', date: '2025-12-16', venue: 'Encore', stakes: '$5/$10 NL', duration: 5, buyIn: 1000, cashOut: 3500, pnl: 2500, note: '' },
+  { id: '125', date: '2025-12-17', venue: 'Encore', stakes: '$5/$10 NL', duration: 5, buyIn: 1000, cashOut: 1600, pnl: 600, note: '' },
+  { id: '126', date: '2025-12-23', venue: 'Hustler', stakes: '$5/$5 NL', duration: 5, buyIn: 1400, cashOut: 0, pnl: -1400, note: '' },
+  { id: '127', date: '2026-04-08', venue: 'Hustler', stakes: '$5/$5 NL', duration: 5, buyIn: 2000, cashOut: 0, pnl: -2000, note: '' },
+  { id: '128', date: '2026-04-09', venue: 'Wynn', stakes: '$1/$3 NL', duration: 5, buyIn: 500, cashOut: 1050, pnl: 550, note: '' },
+  { id: '129', date: '2026-05-09', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 2812, pnl: 1612, note: '' },
+  { id: '130', date: '2026-05-12', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 1642, pnl: 442, note: '' },
+  { id: '131', date: '2026-05-13', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 2800, cashOut: 1947, pnl: -853, note: '' },
+  { id: '132', date: '2026-05-14', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 2659, pnl: 1459, note: '' },
+  { id: '133', date: '2026-05-15', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 2342, pnl: 1142, note: '' },
+  { id: '134', date: '2026-05-16', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1200, cashOut: 1833, pnl: 633, note: '' },
+  { id: '135', date: '2026-05-17', venue: 'Orange City Racing and Card Club', stakes: '$2/$5 NL', duration: 5, buyIn: 1600, cashOut: 2692, pnl: 1092, note: '' },
+  { id: '136', date: '2026-05-18', venue: 'Orange City Racing and Card Club', stakes: '$1/$2 NL', duration: 5, buyIn: 600, cashOut: 859, pnl: 259, note: '' },
 ];
 
 const DEMO_POSTS = [
